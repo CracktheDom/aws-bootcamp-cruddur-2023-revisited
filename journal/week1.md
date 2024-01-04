@@ -196,3 +196,20 @@ networks:
 * Navigate to http://localhost:3000 to see the Cruddur site with data pulled from backend-flask
 
 ----------------
+
+## Create notification feature
+![Week 1 video - notification](https://www.youtube.com/watch?v=k-_o0cCpksk&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=25)
+
+### openapi-3.0.yml
+* `openapi-3.0.yml` file provides standard for api paths and framework
+![openapis.org](openapis.org) - Provides details on the specifications stated the OpenAPI Specification 3.0.X
+* Importing *openapi-3.0.yml* to ![dash.readme.com](dash.readme.com) will generate documentation pages for the api
+* This project was created to mirror ![*Rail Service Objects*](www.toptal.com/ruby-on-rails/rails-service-objects-tutorial), this pattern separates functions into individual services (microservices) that allows for easier migration to the cloud, e.g. AWS API Gateway or AWS Lambda
+* Structure of API response is stated in the schema outlined in *openapi-3.0.yml*
+* Add api route `/api/activities/notifications` to *openapi-3.0.yml*
+
+### backend-flask
+* Add method for api route `/api/activities/notifications` to *backend-flask/app.py*
+* Create new file, *notifications_activities.py*, to *backend-flask/services/* directory, and add code for class method, `NotificationsActivities`
+* Build and run backend-flask container, if it is not already running
+* Navigate to url for backend-flask, e.g. https://localhost:4567/api/activities/notifications to review response object
