@@ -1,8 +1,8 @@
 # Week 1 — App Containerization
 ## Using Containerization
-![Week 1 video](https://www.youtube.com/watch?v=zJnNe5Nv4tE&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=19)
+[Week 1 video](https://www.youtube.com/watch?v=zJnNe5Nv4tE&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=19)
 * containers provide portability of code and a uniform experience across multiple system configurations.
-* ![linuxserver.io](fleet.linuxserver.io) - repository of doc files for container images
+* [linuxserver.io](https://fleet.linuxserver.io) - repository of doc files for container images
 * Open Container Initiative provides standards for construction of containers
 * *scratch* image is an official Docker image that acts as bedrock for containers
 
@@ -198,13 +198,13 @@ networks:
 ----------------
 
 ## Create notification feature
-![Week 1 video - notification](https://www.youtube.com/watch?v=k-_o0cCpksk&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=25)
+[Week 1 video - notification](https://www.youtube.com/watch?v=k-_o0cCpksk&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=25)
 
 ### openapi-3.0.yml
 * `openapi-3.0.yml` file provides standard for api paths and framework
-![openapis.org](openapis.org) - Provides details on the specifications stated the OpenAPI Specification 3.0.X
-* Importing *openapi-3.0.yml* to ![dash.readme.com](dash.readme.com) will generate documentation pages for the api
-* This project was created to mirror ![*Rail Service Objects*](www.toptal.com/ruby-on-rails/rails-service-objects-tutorial), this pattern separates functions into individual services (microservices) that allows for easier migration to the cloud, e.g. AWS API Gateway or AWS Lambda
+[openapis.org](https://openapis.org) - Provides details on the specifications stated the OpenAPI Specification 3.0.X
+* Importing *openapi-3.0.yml* to [dash.readme.com](https://dash.readme.com) will generate documentation pages for the api
+* This project was created to mirror [*Rail Service Objects*](https://www.toptal.com/ruby-on-rails/rails-service-objects-tutorial), this pattern separates functions into individual services (microservices) that allows for easier migration to the cloud, e.g. AWS API Gateway or AWS Lambda
 * Structure of API response is stated in the schema outlined in *openapi-3.0.yml*
 * Add api route `/api/activities/notifications` to *openapi-3.0.yml*
 
