@@ -1,8 +1,8 @@
 # Week 1 — App Containerization
 ## Using Containerization
-!(Week 1 video)[https://www.youtube.com/watch?v=zJnNe5Nv4tE&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=19]
+![Week 1 video](https://www.youtube.com/watch?v=zJnNe5Nv4tE&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=19)
 * containers provide portability of code and a uniform experience across multiple system configurations.
-* !(linuxserver.io)[fleet.linuxserver.io] - repository of doc files for container images
+* ![linuxserver.io](fleet.linuxserver.io) - repository of doc files for container images
 * Open Container Initiative provides standards for construction of containers
 * scratch image is an official Docker image that acts as bedrock for containers
 
@@ -91,33 +91,35 @@ In summary, `RUN` is used for actions during image build, while `CMD` is used to
 * Restart Flask app and return to http://localhost:4567/api/activities/home, JSON response object should be displayed.
 * Unset FRONTEND_URL and BACKEND_URL environment variables
 * navigate to parent directory, by executing `cd ..`
+
 #### Build container
-* execute following command to build image: `docker build -t backend-flask ./backend-flask`
 
-- `docker build`: This is the main command to build a Docker image.
+* execute following command to build image: `docker build -t backend-flask:1.0 ./backend-flask`
 
-- `-t backend-flask`: The `-t` flag is used to tag the image with a name and optionally a tag. In this case, it tags the image with the name "backend-flask". Tags are used to identify different versions or variations of an image.
+  - `docker build`: This is the main command to build a Docker image.
 
-- `./backend-flask`: This specifies the build context, which is the location of the Dockerfile and any files it references during the build process. In this case, it points to the "backend-flask" directory, where the Dockerfile is expected to be found.
+  - `-t backend-flask:1.0`: The `-t` flag is used to tag the image with a name and optionally a tag. In this case, it tags the image with the name "backend-flask". Tags are used to identify different versions or variations of an image, i.e. "1.0".
 
-So, when you run this command, Docker will look for a Dockerfile in the "backend-flask" directory, and it will use that Dockerfile to build an image. The resulting image will be tagged as "backend-flask".
+  - `./backend-flask`: This specifies the build context, which is the location of the Dockerfile and any files it references during the build process. In this case, it points to the "backend-flask" directory, where the Dockerfile is expected to be found.
+
+When this command is executed, Docker will look for a Dockerfile in the "backend-flask" directory, and it will use that Dockerfile to build an image. The resulting image will be tagged as "backend-flask".
 
 #### Run the container
 * execute following command to run container: `docker run --rm -p 4567:4567 -it backend-flask`
 
-The `docker run` command is used to create and start a new container based on a specified Docker image. Let's break down the provided command:
+   * The `docker run` command is used to create and start a new container based on a specified Docker image. Let's break down the provided command:
 
-- `--rm`: This flag automatically removes the container when it exits. This is useful for temporary or disposable containers, ensuring that they don't clutter your system after they have completed their task.
+   - `--rm`: This flag automatically removes the container when it exits. This is useful for temporary or disposable containers, ensuring that they don't clutter your system after they have completed their task.
 
-- `-p 4567:4567`: This flag maps the port from the host machine to the container. In this case, it maps port 4567 on the host to port 4567 on the container. This means that if the application inside the container is listening on port 4567, you can access it on the host machine at http://localhost:4567.
+   - `-p 4567:4567`: This flag maps the port from the host machine to the container. In this case, it maps port 4567 on the host to port 4567 on the container. This means that if the application inside the container is listening on port 4567, you can access it on the host machine at http://localhost:4567.
 
-- `-it`: This flag combines the options `-i` (interactive) and `-t` (allocate a pseudo-TTY). It allows you to interact with the container, providing an interactive terminal. This is useful for applications that require user input or when you want to manually execute commands inside the container.
+   - `-it`: This flag combines the options `-i` (interactive) and `-t` (allocate a pseudo-TTY). It allows you to interact with the container, providing an interactive terminal. This is useful for applications that require user input or when you want to manually execute commands inside the container.
 
-- `backend-flask`: This is the name of the Docker image to use when creating the container. In this case, it refers to the image named "backend-flask."
+   - `backend-flask`: This is the name of the Docker image to use when creating the container. In this case, it refers to the image named "backend-flask."
 
-* Navigating to http://localhost:4567/api/activities/home will give 404 error because `FRONTEND_URL` and `BACKEND_URL` are not set.
+* Navigating to http://localhost:4567/api/activities/home will give 404 error because environment variables, `FRONTEND_URL` and `BACKEND_URL`, are not set.
 * Use `-e` flag to pass environment variables to `docker` commands e.g.:
- `docker run --rm -p 4567:4567 -it ./backend-flask -e FRONTEND_URL='*' BACKEND_URL='*'`
+ `docker run --rm -p 4567:4567 -it ./backend-flask -e FRONTEND_URL='*' -e BACKEND_URL='*'`
 * Now JSON response object will be displayed at http://localhost:4567/api/activities/home
 
 ### Create Dockerfile for frontend-react-js
@@ -181,15 +183,15 @@ networks:
 #### Run `docker compose`
 * execute `docker compose -f "docker-compose.yml" up -d --build`
 
-The `docker-compose` command is used to manage multi-container Docker applications. It reads the configuration from a `docker-compose.yml` file and creates or manages multiple containers as specified in that file.
+   * The `docker-compose` command is used to manage multi-container Docker applications. It reads the configuration from a `docker-compose.yml` file and creates or manages multiple containers as specified in that file.
 
-- `-f "docker-compose.yml"`: This flag specifies the location of the Docker Compose file that defines the services, networks, and volumes for your application. In this case, it's using a file named "docker-compose.yml."
+   - `-f "docker-compose.yml"`: This flag specifies the location of the Docker Compose file that defines the services, networks, and volumes for your application. In this case, it's using a file named "docker-compose.yml."
 
-- `up`: This command is used to start the containers defined in the Docker Compose file. It creates and starts the services, networks, and volumes specified in the `docker-compose.yml` file.
+   - `up`: This command is used to start the containers defined in the Docker Compose file. It creates and starts the services, networks, and volumes specified in the `docker-compose.yml` file.
 
-- `-d`: This flag stands for "detached" mode. It means that the containers will run in the background, and you'll get control of your terminal back after starting the containers. This is useful for running containers in the background without tying up your terminal.
+   - `-d`: This flag stands for "detached" mode. It means that the containers will run in the background, and you'll get control of your terminal back after starting the containers. This is useful for running containers in the background without tying up your terminal.
 
-- `--build`: This flag tells Docker Compose to build the images before starting the services. It ensures that the images used by the services are up-to-date based on the Dockerfiles and application code. If you've made changes to your application code or Dockerfiles, using `--build` will rebuild the images.
+   - `--build`: This flag tells Docker Compose to build the images before starting the services. It ensures that the images used by the services are up-to-date based on the Dockerfiles and application code. If you've made changes to your application code or Dockerfiles, using `--build` will rebuild the images.
 
 * Navigate to http://localhost:3000 to see the Cruddur site with data pulled from backend-flask
 
