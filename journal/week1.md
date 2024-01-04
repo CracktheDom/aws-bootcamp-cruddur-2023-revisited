@@ -4,7 +4,7 @@
 * containers provide portability of code and a uniform experience across multiple system configurations.
 * ![linuxserver.io](fleet.linuxserver.io) - repository of doc files for container images
 * Open Container Initiative provides standards for construction of containers
-* scratch image is an official Docker image that acts as bedrock for containers
+* *scratch* image is an official Docker image that acts as bedrock for containers
 
 ### Create Dockerfile for backend-flask
 * Create *Dockerfile* in *backend-flask* directory and add following code:
@@ -213,3 +213,9 @@ networks:
 * Create new file, *notifications_activities.py*, to *backend-flask/services/* directory, and add code for class method, `NotificationsActivities`
 * Build and run backend-flask container, if it is not already running
 * Navigate to url for backend-flask, e.g. https://localhost:4567/api/activities/notifications to review response object
+
+### frontend-react-js
+* Entry point for React app is *frontend-react-js/src/index.js*
+* in *frontend-react-js/src/App.js* add import statement for `NotificationFeedPage` and path to Notifications in the `createBrowerRouter` code section
+* Create *NotificationFeedPage.js* and *NotificationFeedPage.css* files in the *frontend-react-js/src/pages/* directory
+* Add code from *HomeFeedPage.css* to *NotificationFeedPage.css* and from *HomeFeedPage.js* to *NotificationFeedPage.js*, and make modifications pertinent to NotificationFeedPage route
