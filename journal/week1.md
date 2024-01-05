@@ -216,6 +216,91 @@ networks:
 
 ### frontend-react-js
 * Entry point for React app is *frontend-react-js/src/index.js*
-* in *frontend-react-js/src/App.js* add import statement for `NotificationFeedPage` and path to Notifications in the `createBrowerRouter` code section
+* in *frontend-react-js/src/App.js* add import statement for `NotificationFeedPage` and path to Notifications in the `createBrowserRouter` code section
 * Create *NotificationFeedPage.js* and *NotificationFeedPage.css* files in the *frontend-react-js/src/pages/* directory
 * Add code from *HomeFeedPage.css* to *NotificationFeedPage.css* and from *HomeFeedPage.js* to *NotificationFeedPage.js*, and make modifications pertinent to NotificationFeedPage route
+
+## PostgreSQL & DynamoDB containers
+
+### Add statements to *docker-compose.yml*
+
+* Add following code to *docker-compose.yml* for PostgreSQL container
+```yml
+services:
+  p-database:
+  image: postgres:13-alpine
+  restart: always
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=password
+  ports:
+    - "5432:5432"
+  volumes:
+    - p-database:/var/lib/postgresql/data
+
+volumes:
+  p-database:
+    driver: local
+```
+
+* Add following code to *docker-compose.yml* for DynamoDB container
+```yml
+services:
+  dynamodb-local:
+    # https://stackoverflow.com/questions/67533058/persist-local-data-in-volumes-lack-permission-unable-to-open-databa
+    # We needs to add user:root to get this working
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+```
+## Test function of DynamoDB container
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
+* Start containers executing `docker compose -f "docker-compose.yml" up -d --build`
+
+### Create DynamoDB table
+```bash
+aws dynamodb create-table \
+    --endpoint-url http://localhost:8000 \
+    --table-name Music \
+    --attribute-definitions \
+        AttributeName=Artist,AttributeType=S \
+        AttributeName=SongTitle,AttributeType=S \
+    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
+```
+
+### Put Item into Table
+```bash
+aws dynamodb put-item \
+    --endpoint-url http://localhost:8000 \
+    --table-name Music \
+    --item \
+        '{"Artist": {"S": "Men I Trust"}, "SongTitle": {"S": "Show Me How"}, "AlbumTitle": {"S": "Oncle Jazz"}}' \
+    --return-consumed-capacity TOTAL
+```
+
+### List Tables
+```bash
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+```
+
+### Get Records
+```bash
+aws dynamodb scan --table-name Music --query "Items" --endpoint-url http://localhost:8000
+```
+
+## Test function of PostgreSQL container
+* Display list of running containers by executing
+`docker ps`
+* Locate the name of the PostgreSQL container, i.e. aws-boot-cruddur-2023-revisited-p-database-1
+* Then execute following command to attach a shell to the container
+`docker exec -it aws-boot-cruddur-2023-revisited-p-database-1 psql -Upostgres`
+* The command line interface for PostgreSQL will be displayed, `postgres=#`
+* Enter `\l` to list databases
